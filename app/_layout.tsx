@@ -1,9 +1,9 @@
-import {View, Text} from 'react-native'
+import {View} from 'react-native'
 import React from 'react'
 import {Slot} from "expo-router";
 import {useFonts} from "expo-font";
-import {Colors} from "@/constants/Colors";
 import {StatusBar} from "expo-status-bar";
+import {globalStyles} from "@/styles/global-styles";
 
 const RootLayout = () => {
 
@@ -16,7 +16,7 @@ const RootLayout = () => {
     }
 
     return (
-        <View style={{backgroundColor: Colors.background, flex: 1}}>
+        <View style={globalStyles.background}>
             <Slot />
             <StatusBar style="light"/>
         </View>
