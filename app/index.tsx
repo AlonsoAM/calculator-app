@@ -8,7 +8,19 @@ import {useCalculator} from "@/hooks/useCalculator";
 
 const CalculatorApp = () => {
 
-    const {formula, buildNumber, clear, toggleSign, deleteLastCharacter} = useCalculator()
+    const {
+        formula,
+        previousNumber,
+        buildNumber,
+        clear,
+        toggleSign,
+        deleteLastCharacter,
+        divideOperation,
+        multiplyOperation,
+        subtractOperation,
+        addOperation,
+        calculateResult
+    } = useCalculator()
 
     return (
         <View style={globalStyles.calculatorContainer}>
@@ -18,7 +30,7 @@ const CalculatorApp = () => {
                     {formula}
                 </ThemeText>
                 <ThemeText variant={'h2'}>
-                    2500000
+                    {formula === previousNumber ? '' : previousNumber}
                 </ThemeText>
             </View>
             {/*Filas de Botones*/}
@@ -38,7 +50,7 @@ const CalculatorApp = () => {
                                  onPress={deleteLastCharacter}/>
                 <CalculatorBoton label={'/'}
                                  color={Colors.orange}
-                                 onPress={() => buildNumber('/')}/>
+                                 onPress={divideOperation}/>
             </View>
             <View style={globalStyles.row}>
                 {/*Botones*/}
@@ -50,7 +62,7 @@ const CalculatorApp = () => {
                                  onPress={() => buildNumber('9')}/>
                 <CalculatorBoton label={'X'}
                                  color={Colors.orange}
-                                 onPress={() => buildNumber('x')}/>
+                                 onPress={multiplyOperation}/>
             </View>
             <View style={globalStyles.row}>
                 {/*Botones*/}
@@ -62,7 +74,7 @@ const CalculatorApp = () => {
                                  onPress={() => buildNumber('6')}/>
                 <CalculatorBoton label={'-'}
                                  color={Colors.orange}
-                                 onPress={() => buildNumber('-')}/>
+                                 onPress={subtractOperation}/>
             </View>
             <View style={globalStyles.row}>
                 {/*Botones*/}
@@ -74,7 +86,7 @@ const CalculatorApp = () => {
                                  onPress={() => buildNumber('3')}/>
                 <CalculatorBoton label={'+'}
                                  color={Colors.orange}
-                                 onPress={() => buildNumber('+')}/>
+                                 onPress={addOperation}/>
             </View>
             <View style={globalStyles.row}>
                 {/*Botones*/}
@@ -85,7 +97,7 @@ const CalculatorApp = () => {
                                  onPress={() => buildNumber('.')}/>
                 <CalculatorBoton label={'='}
                                  color={Colors.orange}
-                                 onPress={() => buildNumber('=')}/>
+                                 onPress={calculateResult}/>
             </View>
         </View>
     )

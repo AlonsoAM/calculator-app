@@ -9,22 +9,30 @@ enum Operator {
 
 export const useCalculator = () => {
 
-    const [formula, setFormula] = useState('')
+    const [formula, setFormula] = useState('0')
     const [number, setNumber] = useState('0')
     const [previousNumber, setPreviousNumber] = useState('0')
 
     const lastOperation = useRef<Operator>()
 
     useEffect(() => {
-
-        setFormula(number)
-
+        if (lastOperation.current) {
+            const firstFormulaPart = formula.split(' ').at(0)
+            setFormula(`${firstFormulaPart} ${lastOperation.current} ${number}`)
+        } else {
+            setFormula(number)
+        }
     }, [number]);
+
+    useEffect(() => {
+        const subResult = calculateSubResult()
+        setPreviousNumber(subResult.toString())
+    }, [formula]);
 
     const clear = () => {
         setNumber('0')
         setPreviousNumber('0')
-        setFormula('')
+        setFormula('0')
     }
 
     const toggleSign = () => {
@@ -36,11 +44,76 @@ export const useCalculator = () => {
     }
 
     const deleteLastCharacter = () => {
-        if (number.length === 1 || (number.length === 2 && number.includes('-'))) {
-            setNumber('0')
-        } else {
-            setNumber(number.slice(0, -1))
+        let currentSign = ''
+        let temporalNumber = ''
+
+        if (number.includes('-')) {
+            currentSign = '-'
+            temporalNumber = number.substring(1)
         }
+        if (temporalNumber.length > 1) {
+            setNumber(currentSign + temporalNumber.slice(0, -1))
+        } else {
+            setNumber('0')
+        }
+    }
+
+    const setLastNumber = () => {
+        calculateResult()
+        if (number.endsWith('.')) {
+            setPreviousNumber(number.slice(0, -1))
+        }
+        setPreviousNumber(number)
+        setNumber('0')
+    }
+
+    const divideOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.DIVIDE
+    }
+
+    const multiplyOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.MULTIPLY
+    }
+
+    const subtractOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.SUBTRACT
+    }
+
+    const addOperation = () => {
+        setLastNumber()
+        lastOperation.current = Operator.ADD
+    }
+
+    const calculateSubResult = () => {
+        const [firstNumber, operation, secondNumber] = formula.split(' ')
+        const num1 = Number(firstNumber)
+        const num2 = Number(secondNumber)
+
+        if (isNaN(num2)) return num1
+
+        switch (operation) {
+            case Operator.ADD:
+                return num1 + num2
+            case Operator.SUBTRACT:
+                return num1 - num2
+            case Operator.MULTIPLY:
+                return num1 * num2
+            case Operator.DIVIDE:
+                return num1 / num2
+            default:
+                return num1
+        }
+
+    }
+
+    const calculateResult = () => {
+        const result = calculateSubResult()
+        setFormula(result.toString())
+        lastOperation.current = undefined
+        setPreviousNumber('0')
     }
 
     const buildNumber = (textNumber: string) => {
@@ -75,7 +148,13 @@ export const useCalculator = () => {
         clear,
         buildNumber,
         toggleSign,
-        deleteLastCharacter
+        deleteLastCharacter,
+        divideOperation,
+        multiplyOperation,
+        subtractOperation,
+        addOperation,
+        calculateSubResult,
+        calculateResult
     }
 
 }
