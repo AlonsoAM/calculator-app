@@ -8,7 +8,7 @@ import {useCalculator} from "@/hooks/useCalculator";
 
 const CalculatorApp = () => {
 
-    const {formula, buildNumber} = useCalculator()
+    const {formula, buildNumber, clear, toggleSign, deleteLastCharacter} = useCalculator()
 
     return (
         <View style={globalStyles.calculatorContainer}>
@@ -27,15 +27,15 @@ const CalculatorApp = () => {
                 <CalculatorBoton label={'C'}
                                  blackText
                                  color={Colors.lightGray}
-                                 onPress={() => buildNumber('C')}/>
+                                 onPress={clear}/>
                 <CalculatorBoton label={'+/-'}
                                  blackText
                                  color={Colors.lightGray}
-                                 onPress={() => buildNumber('+/-')}/>
+                                 onPress={toggleSign}/>
                 <CalculatorBoton label={'del'}
                                  blackText
                                  color={Colors.lightGray}
-                                 onPress={() => buildNumber('del')}/>
+                                 onPress={deleteLastCharacter}/>
                 <CalculatorBoton label={'/'}
                                  color={Colors.orange}
                                  onPress={() => buildNumber('/')}/>

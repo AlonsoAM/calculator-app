@@ -27,11 +27,27 @@ export const useCalculator = () => {
         setFormula('')
     }
 
+    const toggleSign = () => {
+        if (number.includes('-')) {
+            setNumber(number.replace('-', ''))
+        } else {
+            setNumber('-' + number)
+        }
+    }
+
+    const deleteLastCharacter = () => {
+        if (number.length === 1 || (number.length === 2 && number.includes('-'))) {
+            setNumber('0')
+        } else {
+            setNumber(number.slice(0, -1))
+        }
+    }
+
     const buildNumber = (textNumber: string) => {
         // Verificar si ya existe el punto decimal
         if (number.toString().includes('.') && textNumber === '.') return
 
-        if(number.startsWith('0') || number.startsWith('-0')) {
+        if (number.startsWith('0') || number.startsWith('-0')) {
             // Punto decimal
             if (textNumber === '.') {
                 setNumber(number + textNumber)
@@ -44,6 +60,8 @@ export const useCalculator = () => {
                 // Evitar 0000.0
             } else if (textNumber === '0' && !number.includes('.')) {
                 setNumber(number)
+            } else {
+                setNumber(number + textNumber)
             }
         } else {
             setNumber(number + textNumber)
@@ -55,7 +73,9 @@ export const useCalculator = () => {
         number,
         previousNumber,
         clear,
-        buildNumber
+        buildNumber,
+        toggleSign,
+        deleteLastCharacter
     }
 
 }
