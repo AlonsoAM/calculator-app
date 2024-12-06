@@ -13,6 +13,7 @@ interface Props {
 }
 
 const CalculatorBoton = ({label, color = Colors.darkGray, blackText = false, onPress, doubleSize = false}: Props) => {
+
     return (
         <Pressable style={({pressed}) => ({
             ...globalStyles.button,
